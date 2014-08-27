@@ -2,12 +2,11 @@ package rest;
 
 import java.io.IOException;
 
-import server.Handler;
-import server.Request;
-import server.Response;
-import server.Server;
-import server.sun.SunHttpServer;
-//import javax.annotation.Resource;
+import rest.server.Handler;
+import rest.server.Request;
+import rest.server.Response;
+import rest.server.Server;
+import rest.server.sun.SunHttpServer;
 
 public class RestServer implements Handler {
 	private Server server;

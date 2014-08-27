@@ -1,10 +1,10 @@
-package server.sun;
+package rest.server.sun;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import server.Request;
+import rest.server.Request;
 
 import com.sun.net.httpserver.HttpExchange;
 

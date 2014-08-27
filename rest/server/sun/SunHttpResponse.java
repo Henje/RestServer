@@ -1,9 +1,9 @@
-package server.sun;
+package rest.server.sun;
 
 import java.io.IOException;
 import java.util.List;
 
-import server.Response;
+import rest.server.Response;
 
 import com.sun.net.httpserver.HttpExchange;
 

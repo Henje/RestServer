@@ -1,4 +1,4 @@
-package server;
+package rest.server;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package server.sun;
+package rest.server.sun;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import server.Handler;
-import server.Server;
+import rest.server.Handler;
+import rest.server.Server;
 import sun.net.httpserver.HttpServerImpl;
 
 import com.sun.net.httpserver.HttpContext;

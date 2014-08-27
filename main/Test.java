@@ -1,3 +1,4 @@
+package main;
 import rest.RestServer;
 
 public class Test {

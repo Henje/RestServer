@@ -1,8 +1,8 @@
-package server.sun;
+package rest.server.sun;
 
 import java.io.IOException;
 
-import server.Handler;
+import rest.server.Handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
