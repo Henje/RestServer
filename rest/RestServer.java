@@ -1,5 +1,6 @@
 package rest;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import rest.server.Handler;
@@ -9,6 +10,8 @@ import rest.server.Server;
 import rest.server.sun.SunHttpServer;
 
 public class RestServer implements Handler {
+	private static final Class<?>[] EXCEPTIONS = new Class<?>[] {FileNotFoundException.class, SecurityException.class};
+	private static final int[] RESPONSE_CODES = new int[] {404, 403};
 	private Server server;
 	private ResourceHandler resource;
 	
@@ -52,8 +55,17 @@ public class RestServer implements Handler {
 			Object result = resource.applyMethod(request.getMethod(), request.getPath());
 			response.setBody(result.toString());
 			response.setResonseCode(200);
-		} catch(IllegalArgumentException e) {
-			response.setResonseCode(404);
+		} catch (Throwable e) {
+			int responseCode = getResponseCodeForException(e);
+			response.setResonseCode(responseCode);
 		}
+	}
+
+	private int getResponseCodeForException(Throwable e) {
+		for(int i = 0; i < EXCEPTIONS.length; i++) {
+			if(EXCEPTIONS[i].isInstance(e))
+				return RESPONSE_CODES[i];
+		}
+		return 500;
 	}
 }

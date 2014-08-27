@@ -1,7 +1,7 @@
 RestServer
 ==========
 
-Very simple implementation of a REST framework. I created this because I just wanted HTTP server without any XML configuration.
+Very simple implementation of a REST framework. I created this because I just wanted a HTTP server without any XML configuration.
 
 Usage
 =====
@@ -19,7 +19,7 @@ try {
 }
 ```
 
-And the resource is a POJO with annotation for the routing:
+And the resource is a simple Java object with an annotation for the routing:
 
 ```Java
 @Resource

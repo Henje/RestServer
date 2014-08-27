@@ -1,5 +1,7 @@
 package rest;
 
+import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,19 +29,21 @@ public class ResourceHandler {
 		}
 	}
 	
-	public Object applyMethod(String method, String path) {
+	public Object applyMethod(String method, String path) throws Throwable {
 		for(Iterator<Entry<RestRequest,Method>> it = paths.entrySet().iterator(); it.hasNext();) {
 			Entry<RestRequest,Method> entry = it.next();
 			RestRequest request = entry.getKey();
 			if(request.isRequestApplicable(method, path)) {
 				try {
 					return entry.getValue().invoke(resource, request.getPathArguments(path));
-				} catch (Exception e) {
+				} catch (IllegalAccessException | IllegalArgumentException e) {
 					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					throw e.getCause();
 				}
 			}
 		}
-		throw new IllegalArgumentException(method+" "+path);
+		throw new FileNotFoundException(method+" "+path);
 	}
 
 }
