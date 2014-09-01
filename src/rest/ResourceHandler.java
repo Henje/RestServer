@@ -9,6 +9,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import rest.method.DELETE;
+import rest.method.GET;
+import rest.method.POST;
+import rest.method.PUT;
+
 public class ResourceHandler {
 	private static final Class<?>[] methods = new Class<?>[]{GET.class, POST.class, PUT.class, DELETE.class};
 	private Map<RestRequest, Method> paths = new HashMap<RestRequest, Method>();
