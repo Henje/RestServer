@@ -9,7 +9,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class SunHttpResponse implements Response {
 	private HttpExchange http;
-	private String body;
+	private String body = "";
 	private int responseCode;
 
 	public SunHttpResponse(HttpExchange http) {
@@ -33,7 +33,7 @@ public class SunHttpResponse implements Response {
 
 	public void close() {
 		try {
-			if(body != null && responseCode != 0) {
+			if(responseCode != 0) {
 				byte[] buffer = body.getBytes();
 				http.sendResponseHeaders(responseCode, buffer.length);
 				http.getResponseBody().write(buffer);

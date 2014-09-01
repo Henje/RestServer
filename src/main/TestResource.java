@@ -15,4 +15,9 @@ public class TestResource {
 	public String test(Arguments args) {
 		return "Hello " + args.get("name") + "!";
 	}
+	
+	@GET(path = "/secret")
+	public String exceptionTest(Arguments args) {
+		throw new SecurityException();
+	}
 }
