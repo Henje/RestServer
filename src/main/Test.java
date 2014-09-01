@@ -8,7 +8,7 @@ public class Test {
 		try {
 			server = new RestServer();
 			server.bind("127.0.0.1", 1337);
-			server.addResource(TestResource.class);
+			server.addResource(new TestResource());
 			server.start();
 		} catch (Exception e) {
 			e.printStackTrace();

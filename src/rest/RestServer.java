@@ -36,18 +36,15 @@ public class RestServer implements Handler {
 		server.stop();
 	}
 	
-	public void addResource(Class<?> resource) {
-		if(resource == null) {
-			throw new NullPointerException();
-		}
-		if(resource.isAnnotationPresent(Resource.class)) {
+	public void addResource(Object resource) {
+		if(resource.getClass().isAnnotationPresent(Resource.class)) {
 			try {
-				this.resource = new ResourceHandler(resource.getConstructor().newInstance());
+				this.resource = new ResourceHandler(resource);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			throw new IllegalArgumentException(resource.getCanonicalName());
+			throw new IllegalArgumentException(resource.getClass().getCanonicalName());
 		}
 	}
 
