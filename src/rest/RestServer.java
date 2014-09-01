@@ -37,6 +37,9 @@ public class RestServer implements Handler {
 	}
 	
 	public void addResource(Object resource) {
+		if(this.resource != null) {
+			throw new IllegalStateException();
+		}
 		if(resource.getClass().isAnnotationPresent(Resource.class)) {
 			try {
 				this.resource = new ResourceHandler(resource);

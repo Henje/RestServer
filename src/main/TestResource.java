@@ -1,7 +1,7 @@
 package main;
 import rest.Arguments;
-import rest.GET;
 import rest.Resource;
+import rest.method.GET;
 
 
 @Resource
