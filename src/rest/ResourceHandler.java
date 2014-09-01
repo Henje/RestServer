@@ -1,6 +1,7 @@
 package rest;
 
 import java.io.FileNotFoundException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class ResourceHandler {
+	private static final Class<?>[] methods = new Class<?>[]{GET.class, POST.class, PUT.class, DELETE.class};
 	private Map<RestRequest, Method> paths = new HashMap<RestRequest, Method>();
 	private Object resource;
 
@@ -20,19 +22,16 @@ public class ResourceHandler {
 	private void findApplicableMethods(Class<? extends Object> resourceClass) {
 		for(Method m: resourceClass.getMethods()) {
 			Class<?>[] parameters = m.getParameterTypes();
-			if(parameters.length == 1 && parameters[0].equals(Arguments.class)) {
-				if(m.isAnnotationPresent(GET.class)) {
-					RestRequest request = new RestRequest("GET", m.getAnnotation(GET.class).path());
-					paths.put(request, m);
-				} else if(m.isAnnotationPresent(POST.class)) {
-					RestRequest request = new RestRequest("POST", m.getAnnotation(GET.class).path());
-					paths.put(request, m);
-				} else if(m.isAnnotationPresent(PUT.class)) {
-					RestRequest request = new RestRequest("PUT", m.getAnnotation(GET.class).path());
-					paths.put(request, m);
-				} else if(m.isAnnotationPresent(DELETE.class)) {
-					RestRequest request = new RestRequest("DELETE", m.getAnnotation(GET.class).path());
-					paths.put(request, m);
+			for(Class<?> clazz: methods) {
+				@SuppressWarnings("unchecked")
+				Class<? extends Annotation> methodClass = (Class<? extends Annotation>) clazz;
+				if(m.isAnnotationPresent(methodClass)) {
+					if(parameters.length == 1 && parameters[0].equals(Arguments.class)) {
+						RestRequest request = new RestRequest(methodClass.getSimpleName(), ((GET) m.getAnnotation(methodClass)).path());
+						paths.put(request, m);
+					} else {
+						throw new IllegalArgumentException(m.getName());
+					}
 				}
 			}
 		}

@@ -38,7 +38,7 @@ public class RestServer implements Handler {
 	
 	public void addResource(Class<?> resource) {
 		if(resource == null) {
-			throw new IllegalStateException();
+			throw new NullPointerException();
 		}
 		if(resource.isAnnotationPresent(Resource.class)) {
 			try {
@@ -46,6 +46,8 @@ public class RestServer implements Handler {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else {
+			throw new IllegalArgumentException(resource.getCanonicalName());
 		}
 	}
 
