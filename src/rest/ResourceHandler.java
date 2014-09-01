@@ -24,6 +24,15 @@ public class ResourceHandler {
 				if(m.isAnnotationPresent(GET.class)) {
 					RestRequest request = new RestRequest("GET", m.getAnnotation(GET.class).path());
 					paths.put(request, m);
+				} else if(m.isAnnotationPresent(POST.class)) {
+					RestRequest request = new RestRequest("POST", m.getAnnotation(GET.class).path());
+					paths.put(request, m);
+				} else if(m.isAnnotationPresent(PUT.class)) {
+					RestRequest request = new RestRequest("PUT", m.getAnnotation(GET.class).path());
+					paths.put(request, m);
+				} else if(m.isAnnotationPresent(DELETE.class)) {
+					RestRequest request = new RestRequest("DELETE", m.getAnnotation(GET.class).path());
+					paths.put(request, m);
 				}
 			}
 		}
