@@ -33,7 +33,7 @@ public class FileResource {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 		StringBuilder builder = new StringBuilder();
 		while(reader.ready()) {
-			builder.append(reader.readLine());
+			builder.append(reader.readLine()).append('\n');
 		}
 		reader.close();
 		return builder.toString();
