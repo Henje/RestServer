@@ -2,6 +2,9 @@ package rest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import rest.server.Handler;
 import rest.server.Request;
@@ -13,7 +16,7 @@ public class RestServer implements Handler {
 	private static final Class<?>[] EXCEPTIONS = new Class<?>[] {FileNotFoundException.class, SecurityException.class};
 	private static final int[] RESPONSE_CODES = new int[] {404, 403};
 	private Server server;
-	private ResourceHandler resource;
+	private List<ResourceHandler> resourceHandlers = new ArrayList<>();
 	
 	public RestServer() throws IOException {
 		this(new SunHttpServer());
@@ -36,31 +39,39 @@ public class RestServer implements Handler {
 		server.stop();
 	}
 	
-	public void addResource(Object resource) {
-		if(this.resource != null) {
-			throw new IllegalStateException();
-		}
+	public void addResource(String prefix, Object resource) {
 		if(resource.getClass().isAnnotationPresent(Resource.class)) {
-			try {
-				this.resource = new ResourceHandler(resource);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			ResourceHandler handler = new ResourceHandler(prefix, resource);
+			resourceHandlers.add(handler);
 		} else {
 			throw new IllegalArgumentException(resource.getClass().getCanonicalName());
 		}
+	}
+	
+	public void addResource(Object resource) {
+		addResource("", resource);
 	}
 
 	@Override
 	public void handle(Request request, Response response) {
 		try {
-			Object result = resource.applyMethod(request.getMethod(), request.getPath());
+			Object result = applyMethodToResources(request);
 			response.setBody(result.toString());
 			response.setResonseCode(200);
 		} catch (Throwable e) {
 			int responseCode = getResponseCodeForException(e);
 			response.setResonseCode(responseCode);
 		}
+	}
+
+	private Object applyMethodToResources(Request request) throws Throwable {
+		for(Iterator<ResourceHandler> it = resourceHandlers.iterator(); it.hasNext();) {
+			try {
+				return it.next().applyMethod(request);
+			} catch (FileNotFoundException e) {
+			}
+		}
+		throw new FileNotFoundException(request.toString());
 	}
 
 	private int getResponseCodeForException(Throwable e) {

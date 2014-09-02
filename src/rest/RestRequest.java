@@ -3,6 +3,8 @@ package rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import rest.server.Request;
+
 public class RestRequest {
 	private String method;
 	private List<PathPart> path = new ArrayList<PathPart>();
@@ -23,8 +25,8 @@ public class RestRequest {
 		}
 	}
 
-	public boolean isRequestApplicable(String method, String path) {
-		return this.method.equalsIgnoreCase(method) && checkPath(path);
+	public boolean isRequestApplicable(Request request) {
+		return method.equalsIgnoreCase(request.getMethod()) && checkPath(request.getPath());
 	}
 
 	private boolean checkPath(String path) {
@@ -40,7 +42,8 @@ public class RestRequest {
 	}
 	
 	
-	public Arguments getPathArguments(String path) {
+	public Arguments getPathArguments(Request request) {
+		String path = request.getPath();
 		Arguments args = new Arguments();
 		String[] parts = path.split("/");
 		for(int i = 0; i < parts.length; i++) {

@@ -39,5 +39,10 @@ public class SunHttpRequest implements Request {
 	public InputStream getBody() {
 		return body;
 	}
+	
+	@Override
+	public String toString() {
+		return getMethod() + " " + getPath();
+	}
 
 }
