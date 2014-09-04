@@ -51,9 +51,20 @@ public class ResourceHandler {
 
 	private void addPath(Method m, Class<? extends Annotation> httpMethodClass) {
 		String httpMethod = httpMethodClass.getSimpleName();
-		String path = prefix + ((GET) m.getAnnotation(httpMethodClass)).path();
+		String path = prefix + getPathForMethod(m, httpMethodClass);
 		RestRequest request = new RestRequest(httpMethod, path);
 		paths.put(request, m);
+	}
+
+	private String getPathForMethod(Method m, Class<? extends Annotation> httpMethodClass) {
+		Annotation annotation = m.getAnnotation(httpMethodClass);
+		try {
+			return (String) httpMethodClass.getMethod("path").invoke(annotation);
+		} catch (IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
+		}
+		return "";
 	}
 	
 	public Object applyMethod(Request request) throws Throwable {
