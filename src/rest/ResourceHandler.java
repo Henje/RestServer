@@ -82,6 +82,7 @@ public class ResourceHandler {
 	private Object tryToInvoke(Request request, Method resourceMethod, RestRequest restRequest) throws Throwable {
 		try {
 			Arguments args = restRequest.getPathArguments(request);
+			args.set("body", StreamHelper.readStream(request.getBody()));
 			return resourceMethod.invoke(resource, args);
 		} catch (IllegalAccessException | IllegalArgumentException e) {
 			e.printStackTrace();

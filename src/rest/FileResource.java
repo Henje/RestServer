@@ -1,10 +1,8 @@
 package rest;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import rest.method.GET;
 
@@ -30,12 +28,6 @@ public class FileResource {
 	}
 
 	private String getContents(File file) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		StringBuilder builder = new StringBuilder();
-		while(reader.ready()) {
-			builder.append(reader.readLine()).append('\n');
-		}
-		reader.close();
-		return builder.toString();
+		return StreamHelper.readStream(new FileInputStream(file));
 	}
 }
